@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Build output
+*.min.css
+*.min.js
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# WordPress
+wp-config.php
+
+# Environment
+.env
+.env.*
+
+# Composer
+composer.phar
+
+# PHPUnit
+.phpunit.result.cache
+/coverage/
+
+# Distribution archives
+*.zip
+*.tar.gz
