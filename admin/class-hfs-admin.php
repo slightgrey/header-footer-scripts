@@ -113,11 +113,19 @@ class HFS_Admin {
 		if ( ! is_array( $input ) ) {
 			return array();
 		}
-		return array_map( 'sanitize_key', $input );
+		$registered = get_post_types( array( 'public' => true ) );
+		unset( $registered['attachment'] );
+		return array_values(
+			array_intersect( array_map( 'sanitize_key', $input ), array_keys( $registered ) )
+		);
 	}
 
 	public function sanitize_script_content( $input ) {
-		return wp_unslash( $input );
+		// Enforce string type and strip null bytes. wp_unslash() is already
+		// applied by the Settings API before this callback fires.
+		$input = (string) $input;
+		$input = str_replace( "\0", '', $input );
+		return $input;
 	}
 
 	public function add_meta_boxes() {
@@ -154,6 +162,12 @@ class HFS_Admin {
 
 		// Check capability.
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
+		// Only save for enabled post types.
+		$enabled = (array) get_option( 'hfs_enabled_post_types', array() );
+		if ( ! in_array( $post->post_type, $enabled, true ) ) {
 			return;
 		}
 
