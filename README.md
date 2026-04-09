@@ -1,4 +1,4 @@
-# Header Footer Scripts
+# WP Header Footer Scripts
 
 A WordPress plugin that lets administrators inject custom scripts into the `<head>` or footer of specific pages/posts and globally across the site.
 
