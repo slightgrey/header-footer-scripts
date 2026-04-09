@@ -1,0 +1,14 @@
+# Normalize line endings to LF on commit
+* text=auto eol=lf
+
+# Force binary treatment for assets that shouldn't be diffed as text
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.zip binary
