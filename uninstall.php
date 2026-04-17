@@ -15,8 +15,10 @@ if ( is_multisite() ) {
 		delete_option( 'hfs_global_header_scripts' );
 		delete_option( 'hfs_global_footer_scripts' );
 		delete_option( 'hfs_legacy_fallback' );
+		delete_option( 'hfs_override_yoast_canonical' );
 		delete_post_meta_by_key( '_hfs_header_scripts' );
 		delete_post_meta_by_key( '_hfs_footer_scripts' );
+		delete_post_meta_by_key( '_hfs_override_yoast_canonical' );
 		restore_current_blog();
 	}
 } else {
@@ -24,6 +26,8 @@ if ( is_multisite() ) {
 	delete_option( 'hfs_global_header_scripts' );
 	delete_option( 'hfs_global_footer_scripts' );
 	delete_option( 'hfs_legacy_fallback' );
+	delete_option( 'hfs_override_yoast_canonical' );
 	delete_post_meta_by_key( '_hfs_header_scripts' );
 	delete_post_meta_by_key( '_hfs_footer_scripts' );
+	delete_post_meta_by_key( '_hfs_override_yoast_canonical' );
 }

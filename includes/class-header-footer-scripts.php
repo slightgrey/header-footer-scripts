@@ -46,8 +46,14 @@ class Header_Footer_Scripts {
 	private function define_public_hooks() {
 		$plugin_public = new HFS_Public( $this->plugin_name, $this->version );
 
+		// Migrate legacy _auhfc data on first front-end visit to a post.
+		$this->loader->add_action( 'wp', $plugin_public, 'maybe_migrate_legacy_data' );
+		// Priority 1 — runs before WP core outputs rel_canonical at priority 10.
+		$this->loader->add_action( 'wp_head', $plugin_public, 'maybe_remove_default_canonical', 1 );
 		$this->loader->add_action( 'wp_head', $plugin_public, 'inject_header_scripts', 999 );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'inject_footer_scripts', 999 );
+		// Priority 999 — runs after Yoast's internal canonical resolution.
+		$this->loader->add_filter( 'wpseo_canonical', $plugin_public, 'maybe_suppress_yoast_canonical', 999 );
 	}
 
 	public function run() {

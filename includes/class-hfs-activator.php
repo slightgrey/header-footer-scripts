@@ -42,5 +42,6 @@ class HFS_Activator {
 		add_option( 'hfs_global_header_scripts', '' );
 		add_option( 'hfs_global_footer_scripts', '' );
 		add_option( 'hfs_legacy_fallback', '1' );
+		add_option( 'hfs_override_yoast_canonical', '0' );
 	}
 }

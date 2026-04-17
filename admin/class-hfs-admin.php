@@ -117,6 +117,16 @@ class HFS_Admin {
 				'default'           => '1',
 			)
 		);
+
+		register_setting(
+			'hfs_settings',
+			'hfs_override_yoast_canonical',
+			array(
+				'type'              => 'string',
+				'sanitize_callback' => 'sanitize_text_field',
+				'default'           => '0',
+			)
+		);
 	}
 
 	public function sanitize_enabled_post_types( $input ) {
@@ -153,7 +163,56 @@ class HFS_Admin {
 	}
 
 	public function render_meta_box( $post ) {
+		$this->maybe_migrate_legacy_data( $post );
 		include HFS_PLUGIN_DIR . 'admin/partials/hfs-admin-meta-box.php';
+	}
+
+	/**
+	 * Automatically copies _auhfc head/footer data into the HFS post meta fields
+	 * the first time an admin opens a post in the editor — but only when:
+	 *  - The legacy fallback option is enabled.
+	 *  - Both HFS fields (_hfs_header_scripts and _hfs_footer_scripts) are empty.
+	 *  - The post has _auhfc meta with at least one non-empty head or footer value.
+	 *
+	 * After this runs, the HFS fields are populated in the DB. On the next
+	 * front-end visit the plugin uses those HFS values instead of falling back
+	 * to the legacy data.
+	 *
+	 * @param WP_Post $post
+	 */
+	private function maybe_migrate_legacy_data( $post ) {
+		if ( '1' !== get_option( 'hfs_legacy_fallback', '1' ) ) {
+			return;
+		}
+
+		// Skip if HFS data already exists on this post.
+		$existing_header = get_post_meta( $post->ID, '_hfs_header_scripts', true );
+		$existing_footer = get_post_meta( $post->ID, '_hfs_footer_scripts', true );
+		if ( ! empty( trim( (string) $existing_header ) ) || ! empty( trim( (string) $existing_footer ) ) ) {
+			return;
+		}
+
+		// Read legacy _auhfc data.
+		$raw = get_post_meta( $post->ID, '_auhfc', true );
+		if ( empty( $raw ) ) {
+			return;
+		}
+
+		$data = is_array( $raw ) ? $raw : json_decode( (string) $raw, true );
+		if ( ! is_array( $data ) ) {
+			return;
+		}
+
+		$head   = isset( $data['head'] ) ? (string) $data['head'] : '';
+		$footer = isset( $data['footer'] ) ? (string) $data['footer'] : '';
+
+		// Nothing to migrate.
+		if ( empty( trim( $head ) ) && empty( trim( $footer ) ) ) {
+			return;
+		}
+
+		update_post_meta( $post->ID, '_hfs_header_scripts', $head );
+		update_post_meta( $post->ID, '_hfs_footer_scripts', $footer );
 	}
 
 	public function save_meta_box_data( $post_id, $post ) {
@@ -188,5 +247,9 @@ class HFS_Admin {
 		// Save footer scripts.
 		$footer_scripts = isset( $_POST['hfs_footer_scripts'] ) ? wp_unslash( $_POST['hfs_footer_scripts'] ) : '';
 		update_post_meta( $post_id, '_hfs_footer_scripts', $footer_scripts );
+
+		// Save per-post Yoast canonical override.
+		$override_yoast = isset( $_POST['hfs_override_yoast_canonical'] ) ? '1' : '0';
+		update_post_meta( $post_id, '_hfs_override_yoast_canonical', $override_yoast );
 	}
 }

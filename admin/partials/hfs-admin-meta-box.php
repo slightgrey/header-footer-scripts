@@ -3,8 +3,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$header_scripts = get_post_meta( $post->ID, '_hfs_header_scripts', true );
-$footer_scripts = get_post_meta( $post->ID, '_hfs_footer_scripts', true );
+$header_scripts       = get_post_meta( $post->ID, '_hfs_header_scripts', true );
+$footer_scripts       = get_post_meta( $post->ID, '_hfs_footer_scripts', true );
+$override_yoast       = get_post_meta( $post->ID, '_hfs_override_yoast_canonical', true );
+$yoast_active         = class_exists( 'WPSEO_Options' );
 ?>
 <div class="hfs-meta-box">
 
@@ -46,5 +48,32 @@ $footer_scripts = get_post_meta( $post->ID, '_hfs_footer_scripts', true );
 		</div>
 
 	</div>
+
+	<?php if ( $yoast_active ) : ?>
+	<div class="hfs-meta-yoast">
+		<label class="hfs-toggle-row hfs-toggle-row--compact" for="hfs_override_yoast_canonical">
+			<span class="hfs-toggle-info">
+				<span class="hfs-toggle-label">
+					<?php esc_html_e( 'Override Yoast SEO canonical for this page', 'header-footer-scripts' ); ?>
+					<span class="hfs-badge hfs-badge--green"><?php esc_html_e( 'Yoast SEO', 'header-footer-scripts' ); ?></span>
+				</span>
+			</span>
+			<span class="hfs-switch">
+				<input
+					type="checkbox"
+					id="hfs_override_yoast_canonical"
+					name="hfs_override_yoast_canonical"
+					value="1"
+					<?php checked( '1', $override_yoast ); ?>
+				>
+				<span class="hfs-switch__track"></span>
+				<span class="hfs-switch__thumb"></span>
+			</span>
+		</label>
+		<p class="hfs-muted" style="font-size:0.75rem;margin:4px 12px 0;">
+			<?php esc_html_e( 'When checked and your header scripts contain a canonical tag, Yoast\'s canonical is suppressed on this page only.', 'header-footer-scripts' ); ?>
+		</p>
+	</div>
+	<?php endif; ?>
 
 </div>

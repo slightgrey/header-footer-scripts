@@ -6,7 +6,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 $enabled_post_types    = (array) get_option( 'hfs_enabled_post_types', array( 'post', 'page' ) );
 $global_header_scripts = get_option( 'hfs_global_header_scripts', '' );
 $global_footer_scripts = get_option( 'hfs_global_footer_scripts', '' );
-$legacy_fallback       = get_option( 'hfs_legacy_fallback', '1' );
+$legacy_fallback            = get_option( 'hfs_legacy_fallback', '1' );
+$override_yoast_canonical   = get_option( 'hfs_override_yoast_canonical', '0' );
+$yoast_active               = class_exists( 'WPSEO_Options' );
 
 $all_post_types = get_post_types( array( 'public' => true ), 'objects' );
 // Remove attachment post type.
@@ -111,6 +113,40 @@ unset( $all_post_types['attachment'] );
 				</div>
 			</div>
 
+			<!-- Card: Yoast SEO Integration (only shown when Yoast is active) -->
+			<?php if ( $yoast_active ) : ?>
+			<div class="hfs-card hfs-card--full">
+				<div class="hfs-card-header">
+					<h2 class="hfs-card-title">
+						<?php esc_html_e( 'Yoast SEO Integration', 'header-footer-scripts' ); ?>
+						<span class="hfs-badge hfs-badge--green"><?php esc_html_e( 'Yoast SEO', 'header-footer-scripts' ); ?></span>
+					</h2>
+					<p class="hfs-card-desc"><?php esc_html_e( 'When enabled, HFS canonical tags take priority over Yoast\'s canonical output. Yoast is only suppressed when your header scripts actually contain a canonical tag.', 'header-footer-scripts' ); ?></p>
+				</div>
+				<div class="hfs-card-content">
+					<label class="hfs-toggle-row" for="hfs_override_yoast_canonical" style="max-width:420px;">
+						<span class="hfs-toggle-info">
+							<span class="hfs-toggle-label"><?php esc_html_e( 'Override Yoast SEO canonical globally', 'header-footer-scripts' ); ?></span>
+						</span>
+						<span class="hfs-switch">
+							<input
+								type="checkbox"
+								id="hfs_override_yoast_canonical"
+								name="hfs_override_yoast_canonical"
+								value="1"
+								<?php checked( '1', $override_yoast_canonical ); ?>
+							>
+							<span class="hfs-switch__track"></span>
+							<span class="hfs-switch__thumb"></span>
+						</span>
+					</label>
+					<p class="hfs-muted" style="margin-top:10px;font-size:0.8125rem;">
+						<?php esc_html_e( 'When enabled: if a page\'s header scripts contain a canonical tag, Yoast\'s canonical is suppressed so only yours appears. You can also override on a per-page basis from the post editor.', 'header-footer-scripts' ); ?>
+					</p>
+				</div>
+			</div>
+			<?php endif; ?>
+
 			<!-- Card: Legacy Fallback -->
 			<div class="hfs-card hfs-card--full">
 				<div class="hfs-card-header">
@@ -140,6 +176,13 @@ unset( $all_post_types['attachment'] );
 					<p class="hfs-muted" style="margin-top:10px;font-size:0.8125rem;">
 						<?php esc_html_e( 'When enabled: if a page has no HFS scripts saved, the plugin reads the legacy _auhfc data instead. Your HFS scripts always take priority if both exist. When disabled: only HFS scripts run.', 'header-footer-scripts' ); ?>
 					</p>
+					<div class="hfs-migration-note">
+						<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+						<div>
+							<strong><?php esc_html_e( 'Automatic data migration:', 'header-footer-scripts' ); ?></strong>
+							<?php esc_html_e( 'If _auhfc data exists and the HFS fields are empty, the legacy data is automatically copied into this plugin\'s fields — triggered by either a front-end visit to the post or an admin opening it in the editor. After migration the post uses HFS data directly on every subsequent visit. Migration only runs once per post and is skipped once HFS data is present.', 'header-footer-scripts' ); ?>
+						</div>
+					</div>
 				</div>
 			</div>
 

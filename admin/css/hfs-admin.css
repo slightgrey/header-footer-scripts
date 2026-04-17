@@ -167,6 +167,11 @@
 	color: var(--hfs-purple-fg);
 }
 
+.hfs-badge--green {
+	background: #f0fdf4;
+	color: #15803d;
+}
+
 /* ── Toggle list (post types) ───────────────────────────────────────────── */
 .hfs-toggle-list {
 	display: flex;
@@ -366,6 +371,38 @@
 
 .hfs-code-editor--meta {
 	min-height: 110px;
+}
+
+/* ── Meta box Yoast section ─────────────────────────────────────────────── */
+.hfs-meta-yoast {
+	margin-top: 14px;
+	padding-top: 14px;
+	border-top: 1px solid var(--hfs-border);
+}
+
+.hfs-toggle-row--compact {
+	padding: 6px 12px;
+}
+
+/* ── Migration note ─────────────────────────────────────────────────────── */
+.hfs-migration-note {
+	display: flex;
+	align-items: flex-start;
+	gap: 7px;
+	margin-top: 12px;
+	padding: 10px 12px;
+	background: #f0fdf4;
+	border: 1px solid #bbf7d0;
+	border-radius: var(--hfs-radius-sm);
+	font-size: 0.8125rem;
+	color: #166534;
+	line-height: 1.5;
+}
+
+.hfs-migration-note svg {
+	flex-shrink: 0;
+	margin-top: 1px;
+	color: #15803d;
 }
 
 /* ── Muted text ─────────────────────────────────────────────────────────── */
