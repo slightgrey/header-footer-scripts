@@ -3,7 +3,7 @@
  * Plugin Name:       Header Footer Scripts
  * Plugin URI:        https://github.com/
  * Description:       Inject custom scripts into the &lt;head&gt; or footer of specific pages/posts and globally across your site.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Vince
  * Text Domain:       header-footer-scripts
  * Domain Path:       /languages
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'HFS_VERSION', '1.0.0' );
+define( 'HFS_VERSION', '1.0.1' );
 define( 'HFS_PLUGIN_NAME', 'header-footer-scripts' );
 define( 'HFS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'HFS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
