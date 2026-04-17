@@ -14,6 +14,7 @@ if ( is_multisite() ) {
 		delete_option( 'hfs_enabled_post_types' );
 		delete_option( 'hfs_global_header_scripts' );
 		delete_option( 'hfs_global_footer_scripts' );
+		delete_option( 'hfs_legacy_fallback' );
 		delete_post_meta_by_key( '_hfs_header_scripts' );
 		delete_post_meta_by_key( '_hfs_footer_scripts' );
 		restore_current_blog();
@@ -22,6 +23,7 @@ if ( is_multisite() ) {
 	delete_option( 'hfs_enabled_post_types' );
 	delete_option( 'hfs_global_header_scripts' );
 	delete_option( 'hfs_global_footer_scripts' );
+	delete_option( 'hfs_legacy_fallback' );
 	delete_post_meta_by_key( '_hfs_header_scripts' );
 	delete_post_meta_by_key( '_hfs_footer_scripts' );
 }

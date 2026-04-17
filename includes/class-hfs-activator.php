@@ -41,5 +41,6 @@ class HFS_Activator {
 		add_option( 'hfs_enabled_post_types', array( 'post', 'page' ) );
 		add_option( 'hfs_global_header_scripts', '' );
 		add_option( 'hfs_global_footer_scripts', '' );
+		add_option( 'hfs_legacy_fallback', '1' );
 	}
 }

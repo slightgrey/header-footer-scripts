@@ -6,6 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $enabled_post_types    = (array) get_option( 'hfs_enabled_post_types', array( 'post', 'page' ) );
 $global_header_scripts = get_option( 'hfs_global_header_scripts', '' );
 $global_footer_scripts = get_option( 'hfs_global_footer_scripts', '' );
+$legacy_fallback       = get_option( 'hfs_legacy_fallback', '1' );
 
 $all_post_types = get_post_types( array( 'public' => true ), 'objects' );
 // Remove attachment post type.
@@ -107,6 +108,38 @@ unset( $all_post_types['attachment'] );
 							placeholder="<!-- e.g. chat widgets, conversion pixels -->"
 						><?php echo esc_textarea( $global_footer_scripts ); ?></textarea>
 					</div>
+				</div>
+			</div>
+
+			<!-- Card: Legacy Fallback -->
+			<div class="hfs-card hfs-card--full">
+				<div class="hfs-card-header">
+					<h2 class="hfs-card-title">
+						<?php esc_html_e( 'Legacy Data Migration', 'header-footer-scripts' ); ?>
+						<span class="hfs-badge hfs-badge--muted">_auhfc</span>
+					</h2>
+					<p class="hfs-card-desc"><?php esc_html_e( 'If your previous plugin stored scripts in the _auhfc post meta, enable this to use that data as a fallback when no HFS scripts are set on a page.', 'header-footer-scripts' ); ?></p>
+				</div>
+				<div class="hfs-card-content">
+					<label class="hfs-toggle-row" for="hfs_legacy_fallback" style="max-width:420px;">
+						<span class="hfs-toggle-info">
+							<span class="hfs-toggle-label"><?php esc_html_e( 'Enable legacy _auhfc fallback', 'header-footer-scripts' ); ?></span>
+						</span>
+						<span class="hfs-switch">
+							<input
+								type="checkbox"
+								id="hfs_legacy_fallback"
+								name="hfs_legacy_fallback"
+								value="1"
+								<?php checked( '1', $legacy_fallback ); ?>
+							>
+							<span class="hfs-switch__track"></span>
+							<span class="hfs-switch__thumb"></span>
+						</span>
+					</label>
+					<p class="hfs-muted" style="margin-top:10px;font-size:0.8125rem;">
+						<?php esc_html_e( 'When enabled: if a page has no HFS scripts saved, the plugin reads the legacy _auhfc data instead. Your HFS scripts always take priority if both exist. When disabled: only HFS scripts run.', 'header-footer-scripts' ); ?>
+					</p>
 				</div>
 			</div>
 

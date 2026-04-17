@@ -76,9 +76,11 @@ class HFS_Public {
 			return $scripts;
 		}
 
-		$legacy = $this->get_legacy_auhfc_data( $post_id );
-		if ( $legacy && ! empty( trim( (string) $legacy['head'] ) ) ) {
-			return $legacy['head'];
+		if ( '1' === get_option( 'hfs_legacy_fallback', '1' ) ) {
+			$legacy = $this->get_legacy_auhfc_data( $post_id );
+			if ( $legacy && ! empty( trim( (string) $legacy['head'] ) ) ) {
+				return $legacy['head'];
+			}
 		}
 
 		return '';
@@ -98,9 +100,11 @@ class HFS_Public {
 			return $scripts;
 		}
 
-		$legacy = $this->get_legacy_auhfc_data( $post_id );
-		if ( $legacy && ! empty( trim( (string) $legacy['footer'] ) ) ) {
-			return $legacy['footer'];
+		if ( '1' === get_option( 'hfs_legacy_fallback', '1' ) ) {
+			$legacy = $this->get_legacy_auhfc_data( $post_id );
+			if ( $legacy && ! empty( trim( (string) $legacy['footer'] ) ) ) {
+				return $legacy['footer'];
+			}
 		}
 
 		return '';

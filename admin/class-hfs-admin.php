@@ -107,6 +107,16 @@ class HFS_Admin {
 				'default'           => '',
 			)
 		);
+
+		register_setting(
+			'hfs_settings',
+			'hfs_legacy_fallback',
+			array(
+				'type'              => 'string',
+				'sanitize_callback' => 'sanitize_text_field',
+				'default'           => '1',
+			)
+		);
 	}
 
 	public function sanitize_enabled_post_types( $input ) {
